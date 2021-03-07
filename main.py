@@ -1,17 +1,5 @@
 """Телеграм-бот для работы с mini-jira API"""
-import json
-import telebot
-import handlers_manager
+from bot import Bot
 
-__author__ = 'Обыденный И.В.'
-
-TOKEN = ''
-
-with open('config.json') as f:
-    cfg = json.load(f)
-    if 'token' in cfg:
-        TOKEN = cfg['token']
-
-bot = telebot.TeleBot(TOKEN)
-handlers_manager.handle(bot)
-bot.polling(none_stop=True)
+if __name__ == '__main__':
+    Bot().start()
