@@ -1,6 +1,7 @@
 """Обработчик команды start"""
 import telebot
 from telebot import types
+from handlers_manager import names
 
 __author__ = 'Обыденный И.В.'
 
@@ -8,7 +9,8 @@ __author__ = 'Обыденный И.В.'
 def handle(bot: telebot):
     @bot.message_handler(commands=['start'])
     def start(msg):
-        markup = types.InlineKeyboardMarkup()
-        item = types.InlineKeyboardButton('Start', callback_data='start callback')
-        markup.add(item)
-        bot.send_message(msg.chat.id, 'Вас приветствует mini-jira-bot!', reply_markup=markup)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=False)
+        markup.row()
+        markup.add(types.KeyboardButton(names.CREATE_TASK), types.KeyboardButton(names.TASKS_LIST), row_width=2)
+        markup.add(types.KeyboardButton(names.SHOW_WEB))
+        bot.send_message(msg.chat.id, names.HELLO, reply_markup=markup)
