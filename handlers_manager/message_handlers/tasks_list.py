@@ -1,6 +1,6 @@
 """Основной обработчик сообщений"""
 import telebot
-from  telebot import types
+from telebot import types
 from handlers_manager import names
 from handlers_manager.message_handlers.base_message import msg_dict
 
