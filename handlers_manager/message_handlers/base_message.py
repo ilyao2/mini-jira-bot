@@ -14,7 +14,7 @@ def handle(bot: telebot):
         if msg.text in msg_dict:
             msg_dict[msg.text](msg)
         else:
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=False, row_width=2)
-            markup.add(types.KeyboardButton(names.CREATE_TASK), types.KeyboardButton(names.TASKS_LIST))
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True, selective=False)
+            markup.add(types.KeyboardButton(names.CREATE_TASK), types.KeyboardButton(names.TASKS_LIST), row_width=2)
             markup.add(types.KeyboardButton(names.SHOW_WEB))
             bot.send_message(msg.chat.id, names.UNKNOWING_MESSAGE, reply_markup=markup)
