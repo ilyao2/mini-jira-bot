@@ -1,4 +1,4 @@
-"""Класс для управления обработчиками команд  (Для обработки инлайн кнопок)"""
+"""Модуль для управления обработчиками команд  (Для обработки инлайн кнопок)"""
 import telebot
 from telebot import types
 from bot.handlers_manager import names
