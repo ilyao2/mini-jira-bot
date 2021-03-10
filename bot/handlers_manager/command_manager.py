@@ -21,6 +21,10 @@ class CommandManager:
         def start(msg: types.Message):
             self._start_handler(msg)
 
+        @self.bot.message_handler(commands=['chat_id'])
+        def chat_id(msg: types.Message):
+            self._chat_id_handler(msg)
+
     def _auth_handler(self, msg: types.Message):
         # TODO: auth command
         markup = types.InlineKeyboardMarkup()
@@ -33,3 +37,6 @@ class CommandManager:
         markup.add(types.KeyboardButton(names.CREATE_TASK), types.KeyboardButton(names.TASKS_LIST), row_width=2)
         markup.add(types.KeyboardButton(names.SHOW_WEB))
         self.bot.send_message(msg.chat.id, names.HELLO, reply_markup=markup)
+
+    def _chat_id_handler(self, msg: types.Message):
+        self.bot.send_message(msg.chat.id, str(msg.chat.id))
