@@ -8,6 +8,7 @@ __author__ = 'Обыденный И.В.'
 
 
 class Manager:
+    """Класс для управления обработчиками"""
     def __init__(self, bot: TeleBot):
         self.bot = bot
         self.command_manager = CommandManager(bot)

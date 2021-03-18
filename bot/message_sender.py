@@ -9,6 +9,7 @@ __author__ = 'Обыденный И.В.'
 
 
 class MessageSender:
+    """Класс длля генерирования ответных сообщений"""
     def __init__(self, bot: TeleBot):
         self.bot = bot
         self.markups = {}
