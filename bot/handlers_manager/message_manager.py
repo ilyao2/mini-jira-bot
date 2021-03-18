@@ -42,11 +42,17 @@ class MessageManager:
             self.sender.unknowing_msg(msg.chat.id)
 
     def _tasks_list(self, msg: types.Message):
-        response = requests.get(names.BASE_URL+'tg/view/'+str(msg.chat.id))
+        try:
+            response = requests.get(names.BASE_URL+'tg/view/'+str(msg.chat.id))
+            if response.status_code != 200:
+                raise requests.exceptions.RequestException
+        except requests.exceptions.RequestException:
+            error_text = 'Не могу отобразить список для вас ;(\nВозможно вам нужно зарегистрироваться'
+            self.bot.send_message(msg.chat.id, error_text)
+            return
         tasks = response.json()
 
         # TODO: задачи сортируются по дате
-        # TODO: проверка на исполнение запроса
 
         markup1 = types.InlineKeyboardMarkup()
         for task in tasks['reporter']:

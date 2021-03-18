@@ -2,6 +2,7 @@
 from telebot import TeleBot
 from telebot import types
 from bot.task_template import TaskTemplate
+import requests
 from bot.handlers_manager import names
 
 __author__ = 'Обыденный И.В.'

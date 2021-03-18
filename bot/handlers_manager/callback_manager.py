@@ -36,13 +36,26 @@ class CallbackManager:
     def _show_task_callback(self, call: types.CallbackQuery, task_id: str):
         chat_id = call.message.chat.id
         # TODO: проверка запроса
-        response = requests.get(names.BASE_URL+'tg/task/{}/{}'.format(task_id, chat_id))
+        try:
+            response = requests.get(names.BASE_URL+'tg/task/{}/{}'.format(task_id, chat_id))
+            if response.status_code != 200:
+                raise requests.exceptions.RequestException
+        except requests.exceptions.RequestException:
+            self.bot.answer_callback_query(call.id, 'Невозможно выполнить операцию', False)
+
         task = response.json()
         answer = task['title'] + '\n\n'
         if 'description' in task:
             answer += task['description']+'\n\n'
+
+        if 'reporter' in task:
+            answer += 'Автор задачи: {} {}\n'.format(task['reporter']['name'], task['reporter']['lastName'])
+
+        if 'executor' in task:
+            answer += 'Исполнитель: {} {}\n'.format(task['executor']['name'], task['executor']['lastName'])
+
         if 'deadline' in task:
-            answer += task['deadline']
+            answer += 'deadline: ' + task['deadline']
 
         markup = types.InlineKeyboardMarkup()
         if 'state' in task:
@@ -81,6 +94,12 @@ class CallbackManager:
             new_state = 'WAITING_APPROVED'
         self.bot.edit_message_reply_markup(chat_id, call.message.id)
 
-        response = requests.post(names.BASE_URL + 'tg/task/{}/{}'.format(task_id, chat_id), json={"state": new_state})
+        try:
+            response = requests.post(names.BASE_URL + 'tg/task/{}/{}'.format(task_id, chat_id),
+                                     json={"state": new_state})
+            if response.status_code != 200:
+                raise requests.exceptions.RequestException
+        except requests.exceptions.RequestException:
+            self.bot.answer_callback_query(call.id, 'Невозможно выполнить операцию', False)
 
         self.bot.answer_callback_query(call.id, 'Статус изменён на: ' + new_state, False)
